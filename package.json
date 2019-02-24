@@ -1,0 +1,26 @@
+{
+  "name": "gepars",
+  "description": "Generic parser, WIP",
+  "keywords": [
+    "parser",
+    "compiler"
+  ],
+  "version": "0.0.1alpha",
+  "author": "Angel 'Java' Lopez <webmaster@ajlopez.com> (http://www.ajlopez.com)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ajlopez/gepars.git"
+  },
+  "main": "./lib/gepars.js",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "scripts": {
+    "test": "simpleunit ./test -r"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "simpleunit": "0.0.8"
+  }
+}
