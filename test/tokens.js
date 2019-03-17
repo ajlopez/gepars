@@ -71,9 +71,9 @@ exports['parse two specific tokens'] = function (test) {
     const pdef = gepars.definition();
     
     pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
-    pdef.define('each', 'name:each', function () { return 'if'; });
-    pdef.define('for', 'name:for', function () { return 'for'; });
-    pdef.define('foreach', [ 'name:for', 'name:each' ], function () { return 'foreach'; });
+    pdef.define('each', 'name:each', function (value) { return value; });
+    pdef.define('for', 'name:for', function (value) { return value; });
+    pdef.define('foreach', [ 'name:for', 'name:each' ], function (values) { return values.join(''); });
     pdef.define('name', 'name:', function (value) { return value; });
     
     const lexer = ldef.lexer('for each');
