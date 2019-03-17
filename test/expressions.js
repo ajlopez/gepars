@@ -88,3 +88,23 @@ exports['parse two add expressions with left associativity'] = function (test) {
     test.ok(result);
     test.deepEqual(result, [ [ 42, '+', 1 ], '+', 2 ]);
 };
+
+exports['parse add expression and multiply expression with left associativity and precedence'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('expression', [ 'expression', 'operator:+', 'expression1' ], function (values) { return values; });
+    pdef.define('expression', [ 'expression', 'operator:-', 'expression1' ], function (values) { return values; });
+    pdef.define('expression', 'expression1', function (value) { return value; });
+    pdef.define('expression1', [ 'expression1', 'operator:*', 'integer' ], function (values) { return values; });
+    pdef.define('expression1', [ 'expression1', 'operator:/', 'integer' ], function (values) { return values; });
+    pdef.define('expression1', 'integer', function (value) { return value; });
+    
+    const lexer = ldef.lexer('42 + 1 * 2');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.ok(result);
+    test.deepEqual(result, [ 42, '+', [ 1, '*', 2 ] ]);
+};
