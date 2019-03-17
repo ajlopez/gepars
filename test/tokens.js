@@ -37,3 +37,27 @@ exports['parse name'] = function (test) {
     test.ok(result);
     test.strictEqual(result, 'foo');
 }
+
+exports['parse specific name'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('if', 'name:if', function () { return 'if'; });
+    pdef.define('name', 'name:', function (value) { return value; });
+    
+    const lexer = ldef.lexer('if');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('if');
+    
+    test.ok(result);
+    test.strictEqual(result, 'if');
+    
+    const lexer2 = ldef.lexer('for');
+    const parser2 = pdef.parser(lexer2);
+    
+    const result2 = parser2.parse('if');
+    
+    test.equal(result2, null);
+}
+
