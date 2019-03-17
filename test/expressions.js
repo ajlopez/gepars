@@ -56,3 +56,20 @@ exports['parse two add expressions with right associativity'] = function (test) 
     test.deepEqual(result, [ 42, '+', [ 1, '+', 2 ] ]);
 };
 
+exports['parse add expression and subtract expression with right associativity'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('expression', [ 'integer', 'operator:+', 'expression' ], function (values) { return values; });
+    pdef.define('expression', [ 'integer', 'operator:-', 'expression' ], function (values) { return values; });
+    pdef.define('expression', 'integer', function (value) { return value; });
+    
+    const lexer = ldef.lexer('42 + 1 - 2');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.ok(result);
+    test.deepEqual(result, [ 42, '+', [ 1, '-', 2 ] ]);
+};
+
