@@ -2,6 +2,10 @@
 
 Generic parser, WIP.
 
+## Versions
+
+- Version 0.0.1, first version.
+
 ## Previous work
 
 TBD
@@ -9,6 +13,11 @@ TBD
 ## References
 
 TBD
+
+## To Do
+
+- Samples
+- Usage description
 
 ## License
 
