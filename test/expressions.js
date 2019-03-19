@@ -40,6 +40,22 @@ exports['parse multiply expression'] = function (test) {
     test.deepEqual(result, [ 21, '*', 2 ]);
 };
 
+exports['parse multiply expression using default function'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:');
+    pdef.define('expression', [ 'integer', 'operator:+', 'integer' ]);
+    pdef.define('expression', [ 'integer', 'operator:*', 'integer' ]);
+    
+    const lexer = ldef.lexer('21 * 2');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.ok(result);
+    test.deepEqual(result, [ '21', '*', '2' ]);
+};
+
 exports['parse two add expressions with right associativity'] = function (test) {
     const pdef = gepars.definition();
     
