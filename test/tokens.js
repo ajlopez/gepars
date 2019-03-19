@@ -67,6 +67,35 @@ exports['parse specific name'] = function (test) {
     test.strictEqual(result3, 'for');
 }
 
+exports['parse specific name using default function in definition'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('if', 'name:if');
+    pdef.define('for', 'name:for');
+    pdef.define('name', 'name:');
+    
+    const lexer = ldef.lexer('if');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('if');
+    
+    test.ok(result);
+    test.strictEqual(result, 'if');
+    
+    const lexer2 = ldef.lexer('for');
+    const parser2 = pdef.parser(lexer2);
+    
+    const result2 = parser2.parse('if');
+    
+    test.equal(result2, null);
+    
+    const result3 = parser2.parse('for');
+    
+    test.ok(result3);
+    test.strictEqual(result3, 'for');
+}
+
 exports['parse two specific tokens'] = function (test) {
     const pdef = gepars.definition();
     
