@@ -18,6 +18,7 @@ TBD
 
 - Samples
 - Usage description
+- Custom rule
 
 ## License
 
