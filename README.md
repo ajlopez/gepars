@@ -5,6 +5,7 @@ Generic parser, WIP.
 ## Versions
 
 - Version 0.0.1, first version.
+- Version 0.0.2, cut rule, custom rule.
 
 ## Previous work
 
@@ -18,7 +19,6 @@ TBD
 
 - Samples
 - Usage description
-- Custom rule
 
 ## License
 
