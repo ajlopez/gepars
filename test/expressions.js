@@ -78,7 +78,7 @@ exports['parse add expression and subtract expression with right associativity']
     pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
     pdef.define('expression', [ 'integer', 'operator:+', 'expression' ], function (values) { return values; });
     pdef.define('expression', [ 'integer', 'operator:-', 'expression' ], function (values) { return values; });
-    pdef.define('expression', 'integer', function (value) { return value; });
+    pdef.define('expression', 'integer');
     
     const lexer = ldef.lexer('42 + 1 - 2');
     const parser = pdef.parser(lexer);
@@ -94,7 +94,7 @@ exports['parse two add expressions with left associativity'] = function (test) {
     
     pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
     pdef.define('expression', [ 'expression', 'operator:+', 'integer' ], function (values) { return values; });
-    pdef.define('expression', 'integer', function (value) { return value; });
+    pdef.define('expression', 'integer');
     
     const lexer = ldef.lexer('42 + 1 + 2');
     const parser = pdef.parser(lexer);
@@ -114,7 +114,7 @@ exports['parse add expression and multiply expression with left associativity an
     pdef.define('expression', 'expression1', function (value) { return value; });
     pdef.define('expression1', [ 'expression1', 'operator:*', 'integer' ], function (values) { return values; });
     pdef.define('expression1', [ 'expression1', 'operator:/', 'integer' ], function (values) { return values; });
-    pdef.define('expression1', 'integer', function (value) { return value; });
+    pdef.define('expression1', 'integer');
     
     const lexer = ldef.lexer('42 + 1 * 2');
     const parser = pdef.parser(lexer);
