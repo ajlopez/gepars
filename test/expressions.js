@@ -124,3 +124,19 @@ exports['parse add expression and multiply expression with left associativity an
     test.ok(result);
     test.deepEqual(result, [ 42, '+', [ 1, '*', 2 ] ]);
 };
+
+exports['parse add expression and multiply expression with left associativity and precedence'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('expression', 'integer', function (value) { return value + 1; });
+    
+    const lexer = ldef.lexer('42');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.ok(result);
+    test.equal(result, 43);
+};
+
