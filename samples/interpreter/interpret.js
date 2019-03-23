@@ -2,10 +2,11 @@
 const gepars = require('../..');
 const geast = require('geast');
 const gelex = require('gelex');
+const fs = require('fs');
 
 geast.node('print', [ 'expression' ]);
 
-const code = process.argv[2];
+const code = fs.readFileSync(process.argv[2]).toString();
 
 const ldef = gelex.definition();
 ldef.define('integer', '[0-9][0-9]*');
@@ -38,7 +39,7 @@ pdef.define('term', 'string:', function (value) { return geast.constant(value); 
 pdef.define('term', 'name:', function (value) { return geast.name(value); });
 pdef.define('term', [ 'delimiter:(', 'expression', 'delimiter:)' ], function (values) { return values[1]; });
 
-const lexer = ldef.lexer('let a; a = 1; print "a is " + a; print "Hello, world!";');
+const lexer = ldef.lexer(code);
 const parser = pdef.parser(lexer);
 
 const program = parser.parse('program');

@@ -7,6 +7,11 @@ Generic parser, WIP.
 - Version 0.0.1, first version.
 - Version 0.0.2, cut rule, custom rule.
 
+## Samples
+
+- [Evaluator](https://github.com/ajlopez/gepars/tree/master/samples/evaluator)
+- [Interpreter](https://github.com/ajlopez/gepars/tree/master/samples/interpreter)
+
 ## Previous work
 
 TBD
@@ -17,7 +22,7 @@ TBD
 
 ## To Do
 
-- Samples
+- Improve Samples
 - Usage description
 
 ## License
