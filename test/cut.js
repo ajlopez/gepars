@@ -11,7 +11,7 @@ exports['parse using cut'] = function (test) {
     
     const pdef = gepars.definition();
     
-    pdef.define('zerobeforeone', ['digit:0', gepars.cut(), 'digit:1'], function (values) { return values[0]; });
+    pdef.define('zerobeforeone', ['digit:0', '!', 'digit:1'], function (values) { return values[0]; });
     pdef.define('one', 'digit:1');
     
     const parser = pdef.parser(lexer);
@@ -25,5 +25,30 @@ exports['parse using cut'] = function (test) {
     
     test.ok(result2);
     test.strictEqual(result2, '1');
+}
+
+exports['parse using cut as first condition'] = function (test) {
+    const ldef = gelex.definition();
+
+    ldef.define('delimiter', ';');
+    
+    const lexer = ldef.lexer(';');
+    
+    const pdef = gepars.definition();
+    
+    pdef.define('empty', [ '!', 'delimiter:;' ], function (values) { return []; });
+    pdef.define('semicolon', 'delimiter:;');
+    
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('empty');
+    
+    test.ok(result);
+    test.deepEqual(result, []);
+    
+    const result2 = parser.parse('semicolon');
+    
+    test.ok(result2);
+    test.deepEqual(result2, ';');
 }
 
