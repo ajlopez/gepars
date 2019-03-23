@@ -3,6 +3,8 @@ const gepars = require('../..');
 const geast = require('geast');
 const gelex = require('gelex');
 
+geast.node('print', [ 'expression' ]);
+
 const code = process.argv[2];
 
 const ldef = gelex.definition();
@@ -10,6 +12,7 @@ ldef.define('integer', '[0-9][0-9]*');
 ldef.define('name', '[a-z][a-z]*');
 ldef.define('operator', '+-*/='.split(''));
 ldef.define('delimiter', '();,'.split(''));
+ldef.defineText('string', '"', '"');
 
 const pdef = gepars.definition();
 
@@ -18,6 +21,7 @@ pdef.define('program', 'commandlist', function (value) { return geast.sequence(v
 pdef.define('commandlist', [ 'commandlist', 'command' ], function (values) { values[0].push(values[1]); return values[0]; });
 pdef.define('commandlist', 'command', function (value) { return [ value ]; });
 
+pdef.define('command', [ 'name:print', 'expression', 'delimiter:;' ], function (values) { return geast.print(values[1]); });
 pdef.define('command', [ 'name:let', 'name:', 'delimiter:;' ], function (values) { return geast.variable(values[1]); });
 pdef.define('command', [ 'name:', 'operator:=', 'expression', 'delimiter:;' ], function (values) { return geast.assignment(geast.name(values[0]), values[2]); });
 
@@ -30,13 +34,14 @@ pdef.define('expression1', [ 'expression1', 'operator:/', 'term' ], function (va
 pdef.define('expression1', 'term');
 
 pdef.define('term', 'integer:', function (value) { return geast.constant(parseInt(value)); });
+pdef.define('term', 'string:', function (value) { return geast.constant(value); });
 pdef.define('term', 'name:', function (value) { return geast.name(value); });
 pdef.define('term', [ 'delimiter:(', 'expression', 'delimiter:)' ], function (values) { return values[1]; });
 
-const lexer = ldef.lexer('let a; a = 1;');
+const lexer = ldef.lexer('let a; a = 1; print "a is " + a; print "Hello, world!";');
 const parser = pdef.parser(lexer);
 
-const expression = parser.parse('program');
+const program = parser.parse('program');
 
 function Interpreter() {
     const context = {};
@@ -55,6 +60,10 @@ function Interpreter() {
         context[node.name()] = null;
     };
     
+    this.processName = function (node) {
+        return context[node.name()];
+    }
+    
     this.processAssignment = function (node) {
         const value = node.value().process(this);
         
@@ -64,6 +73,14 @@ function Interpreter() {
     ;}
     
     this.processConstant = function (node) { return node.value(); };
+    
+    this.processPrint = function (node) {
+        const value = node.expression().process(this);
+        
+        console.log(value);
+        
+        return value;
+    }
     
     this.processBinary = function (node) {
         const lvalue = node.left().process(this);
@@ -82,6 +99,4 @@ function Interpreter() {
 
 const interpreter = new Interpreter();
 
-console.log(expression.process(interpreter));
-
-
+program.process(interpreter);
