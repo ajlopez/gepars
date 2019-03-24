@@ -52,3 +52,20 @@ exports['parse using cut as first condition'] = function (test) {
     test.deepEqual(result2, ';');
 }
 
+exports['parse using cut to detect end of input'] = function (test) {
+    const ldef = gelex.definition();
+
+    const lexer = ldef.lexer('');
+    
+    const pdef = gepars.definition();
+    
+    pdef.define('empty', [ '!', 'null' ], function (values) { return []; });
+    
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('empty');
+    
+    test.ok(result);
+    test.deepEqual(result, []);
+}
+
