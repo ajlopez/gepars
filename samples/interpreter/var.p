@@ -1,4 +1,7 @@
 
+/*
+    Define a variable
+*/
 let a;
 a = 1;
 
