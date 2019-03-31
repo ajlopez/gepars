@@ -24,6 +24,34 @@ exports['parse add expression'] = function (test) {
     test.deepEqual(result, [ 42, '+', 1 ]);
 };
 
+exports['not parse add expression'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('expression', [ 'integer', 'operator:+', 'integer' ], function (values) { return values; });
+    
+    const lexer = ldef.lexer('+ 1');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.equal(result, null);
+};
+
+exports['not parse integer expression without integer'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('expression', 'integer', function (value) { return [ value ]; });
+    
+    const lexer = ldef.lexer('+ 1');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('expression');
+    
+    test.equal(result, null);
+};
+
 exports['parse multiply expression'] = function (test) {
     const pdef = gepars.definition();
     
