@@ -7,6 +7,7 @@ Generic parser, WIP.
 - Version 0.0.1, first version.
 - Version 0.0.2, cut rule, custom rule.
 - Version 0.0.3, refactor cut rule, null rule.
+- Version 0.0.4, fix parse rule when does not parse returns null.
 
 ## Samples
 
