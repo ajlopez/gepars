@@ -168,3 +168,48 @@ exports['parse add expression and multiply expression with left associativity an
     test.equal(result, 43);
 };
 
+exports['parse composite with optional integer'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('sequence', [ 'integer', '?integer', '?integer' ], function (values) { return values; });
+    
+    const lexer = ldef.lexer('42');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('sequence');
+    
+    test.ok(result);
+    test.deepEqual(result, [ 42, null, null ]);
+};
+
+exports['parse composite with optional integers with values'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('sequence', [ 'integer', '?integer', '?integer' ], function (values) { return values; });
+    
+    const lexer = ldef.lexer('42 1 2');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('sequence');
+    
+    test.ok(result);
+    test.deepEqual(result, [ 42, 1, 2 ]);
+};
+
+exports['parse composite with optional integer at beginnings with values'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('name', 'name:');
+    pdef.define('integer', 'integer:', function (value) { return parseInt(value); });
+    pdef.define('sequence', [ '?integer', 'name' ], function (values) { return values; });
+    
+    const lexer = ldef.lexer('foo');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('sequence');
+    
+    test.ok(result);
+    test.deepEqual(result, [ null, 'foo' ]);
+};
