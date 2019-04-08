@@ -29,7 +29,7 @@ pdef.define('command', [ 'simplecommand', 'delimiter:;' ], function (values) { r
 
 pdef.define('simplecommand', [ 'name:print', 'expression' ], function (values) { return geast.print(values[1]); });
 pdef.define('simplecommand', [ 'name:let', 'name:' ], function (values) { return geast.variable(values[1]); });
-pdef.define('simplecommand', [ 'name:', 'operator:=', 'expression' ], function (values) { return geast.assignment(geast.name(values[0]), values[2]); });
+pdef.define('simplecommand', [ 'name:', 'operator:=', 'expression' ], function (values) { return geast.assign(geast.name(values[0]), values[2]); });
 
 pdef.define('expression', 'expression0');
 pdef.define('expression0', [ 'expression0', 'operator:==', 'expression2' ], function (values) { return geast.binary(values[1], values[0], values[2]); });
@@ -77,8 +77,8 @@ function Interpreter() {
         return context[node.name()];
     }
     
-    this.processAssignment = function (node) {
-        const value = node.value().process(this);
+    this.processAssign = function (node) {
+        const value = node.expression().process(this);
         
         context[node.lefthand().name()] = value;
         
