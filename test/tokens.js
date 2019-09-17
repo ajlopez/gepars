@@ -114,3 +114,33 @@ exports['parse two specific tokens'] = function (test) {
     test.strictEqual(result, 'foreach');
 }
 
+exports['parse new line as char'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('endofline', 'char:\n');
+    
+    const lexer = ldef.lexer('\n');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('endofline');
+    
+    test.ok(result);
+    test.strictEqual(result, '\n');
+}
+
+exports['no new line as char'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('endofline', 'char:\n');
+    pdef.define('name', 'name:', function (value) { return value; });
+    
+    const lexer = ldef.lexer('a');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('endofline');    
+    test.ok(!result);
+    
+    const result2 = parser.parse('name');    
+    test.equal(result2, 'a');
+}
+
