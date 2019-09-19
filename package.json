@@ -21,7 +21,7 @@
   "dependencies": {},
   "devDependencies": {
     "geast": "0.0.8",
-    "gelex": "0.0.6",
+    "gelex": "0.0.7",
     "simpleunit": "0.0.8"
   }
 }
