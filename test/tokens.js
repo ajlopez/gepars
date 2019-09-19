@@ -144,3 +144,19 @@ exports['no new line as char'] = function (test) {
     test.equal(result2, 'a');
 }
 
+exports['retract char'] = function (test) {
+    const pdef = gepars.definition();
+    
+    pdef.define('abc', [ 'char:a', 'char:b', 'char:c' ]);
+    pdef.define('name', 'name:', function (value) { return value; });
+    
+    const lexer = ldef.lexer('abd');
+    const parser = pdef.parser(lexer);
+    
+    const result = parser.parse('abc');    
+    test.ok(!result);
+    
+    const result2 = parser.parse('name');    
+    test.equal(result2, 'abd');
+}
+
