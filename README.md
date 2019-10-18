@@ -10,6 +10,7 @@ Generic parser, WIP.
 - Version 0.0.4, fix parse rule when does not parse returns null.
 - Version 0.0.5, optional element in composite parse
 - Version 0.0.6, using lexer char special token
+- Version 0.0.7, improving process of left recursive rules
 
 ## Samples
 
